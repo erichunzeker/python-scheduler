@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_stylist') }}" method="post" class="add-stylist">
+      <dl>
+        <dt>Title:
+        <dd><input type="text" size="30" name="name">
+        <dd><input type="submit" value="add">
+      </dl>
+    </form>
+  {% endif %}
+  <ul class="entries">
+  {% for stylist in stylists %}
+    <li><h2>{{ stylist.name }}</h2>
+  {% else %}
+    <li><em>Unbelievable.  No stylists here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
