@@ -8,11 +8,13 @@ db = SQLAlchemy()
 class Patron(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
-    appointments = db.relationship('Appointment', backref='patron', lazy='dynamic')
+    password = db.Column(db.Text, nullable=False)
 
-    def __init__(self, name, appointments):
+    # appointments = db.relationship('Appointment', backref='patron', lazy='dynamic')
+
+    def __init__(self, name, password):
         self.name = name
-        self.appointments = appointments
+        self.password = password
 
     def __repr__(self):
         return '<Patron {}>'.format(self.id)
@@ -21,11 +23,12 @@ class Patron(db.Model):
 class Stylist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
-
+    password = db.Column(db.Text, nullable=False)
     # appointments = db.relationship('Appointment', backref='stylist', lazy='dynamic')
 
-    def __init__(self, name):  # , appointments):
+    def __init__(self, name, password):  # , appointments):
         self.name = name
+        self.password = password
         # self.appointments = appointments
 
     def __repr__(self):
