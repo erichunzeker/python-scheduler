@@ -1,4 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
-<p>lolololol</p>
+<p>Welcome, {{ name }}!</p>
+
+<ul class="entries">
+    {% for stylist in stylists %}
+    <li><p>{{ stylist.name }}</p>
+        {% else %}
+    <li><em>Unbelievable. No stylists here so far</em>
+        {% endfor %}
+</ul>
 {% endblock %}

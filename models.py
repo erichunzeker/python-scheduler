@@ -9,12 +9,12 @@ class Patron(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
+    appointments = db.relationship('Appointment', backref='patron', lazy='dynamic')
 
-    # appointments = db.relationship('Appointment', backref='patron', lazy='dynamic')
-
-    def __init__(self, name, password):
+    def __init__(self, name, password, appointments):
         self.name = name
         self.password = password
+        self.appointments = appointments
 
     def __repr__(self):
         return '<Patron {}>'.format(self.id)
@@ -24,12 +24,12 @@ class Stylist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    # appointments = db.relationship('Appointment', backref='stylist', lazy='dynamic')
+    appointments = db.relationship('Appointment', backref='stylist', lazy='dynamic')
 
-    def __init__(self, name, password):  # , appointments):
+    def __init__(self, name, password, appointments):
         self.name = name
         self.password = password
-        # self.appointments = appointments
+        self.appointments = appointments
 
     def __repr__(self):
         return '<Stylist {}>'.format(self.id)

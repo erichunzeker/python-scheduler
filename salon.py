@@ -28,7 +28,14 @@ def initdb_command():
 
 @app.route('/')
 def home():
-    return render_template('patron.html')
+    return render_template('home.html')
+
+
+@app.route('/patron')
+def patron_page():
+    name = session['username']
+    stylists = Stylist.query.order_by(Stylist.id.desc()).all()
+    return render_template('patron.html', stylists=stylists, name=name)
 
 
 @app.route('/owner')
@@ -69,7 +76,7 @@ def login():
                 session['logged_in'] = True
                 session['username'] = request.form['name']
                 flash('You were logged in')
-                return redirect(url_for('home'))
+                return redirect(url_for('patron_page'))
         for stylist in stylists:
             if request.form['name'] == stylist.name and request.form['password'] == stylist.password:
                 session['logged_in'] = True
@@ -104,7 +111,7 @@ def register():
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('owner_page'))
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
