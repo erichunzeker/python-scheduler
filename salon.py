@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
-from models import db, Stylist, Patron
+from models import db, Stylist, Patron, Appointment
 
 app = Flask(__name__)
 
@@ -58,7 +58,8 @@ def add_stylist():
         abort(401)
     if not session.get('username') == 'owner':
         abort(401)
-    new = Stylist(request.form['name'], request.form['password'])
+    a = Appointment('test')
+    new = Stylist(request.form['name'], request.form['password'], appointments=[a])
     db.session.add(new)
     db.session.commit()
     flash('New entry was successfully posted')
