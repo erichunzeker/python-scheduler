@@ -33,8 +33,16 @@ def home():
 
 @app.route('/owner')
 def owner_page():
+    if not session.get('username') == 'owner':
+        abort(401)
+
     stylists = Stylist.query.order_by(Stylist.id.desc()).all()
     return render_template('owner.html', stylists=stylists)
+
+
+@app.route('/stylist')
+def stylist_page():
+    return render_template('stylist.html')
 
 
 @app.route('/add_stylist', methods=['POST'])
@@ -67,7 +75,7 @@ def login():
                 session['logged_in'] = True
                 session['username'] = request.form['name']
                 flash('You were logged in')
-                return redirect(url_for('owner_page'))
+                return redirect(url_for('stylist_page'))
         if request.form['name'] != app.config['USERNAME']:
             error = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
@@ -88,7 +96,7 @@ def register():
         db.session.add(new)
         db.session.commit()
         flash('New patron was successfully added')
-        return redirect(url_for('owner_page'))
+        return redirect(url_for('home'))
     return render_template('register.html', error=error)
 
 
