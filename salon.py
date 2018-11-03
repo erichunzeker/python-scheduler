@@ -47,9 +47,10 @@ def owner_page():
     return render_template('owner.html', stylists=stylists)
 
 
-@app.route('/stylist')
-def stylist_page():
-    return render_template('stylist.html')
+@app.route('/stylist/<name>')
+def stylist_page(name):
+    #appointments = Stylist.query.order_by
+    return render_template('stylist.html', name=name)#, appointments=appointments)
 
 
 @app.route('/add_stylist', methods=['POST'])
@@ -58,8 +59,7 @@ def add_stylist():
         abort(401)
     if not session.get('username') == 'owner':
         abort(401)
-    a = Appointment('test')
-    new = Stylist(request.form['name'], request.form['password'], appointments=[a])
+    new = Stylist(request.form['name'], request.form['password'])
     db.session.add(new)
     db.session.commit()
     flash('New entry was successfully posted')
@@ -83,7 +83,7 @@ def login():
                 session['logged_in'] = True
                 session['username'] = request.form['name']
                 flash('You were logged in')
-                return redirect(url_for('stylist_page'))
+                return redirect(url_for('stylist_page', name=stylist.name))
         if request.form['name'] != app.config['USERNAME']:
             error = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
