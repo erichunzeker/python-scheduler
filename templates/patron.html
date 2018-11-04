@@ -3,10 +3,22 @@
 <p>Welcome, {{ name }}!</p>
 
 <ul class="entries">
+
+    <p>here is the list of stylists: </p>
+
     {% for stylist in stylists %}
-    <li><p>{{ stylist.name }}</p>
-        {% else %}
+    <a href="{{ url_for('stylist_page', name=stylist.name) }}">{{ stylist.name }}</a>
+
+    {% else %}
     <li><em>Unbelievable. No stylists here so far</em>
+        {% endfor %}
+
+        <p>your appointments: </p>
+        {% for apt in patron.appointments %}
+
+            <p>{{ apt.date }}</p>
+        {% else %}
+    <li><em>no appointments scheduled</em>
         {% endfor %}
 </ul>
 {% endblock %}

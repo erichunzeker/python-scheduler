@@ -3,10 +3,18 @@
 <p>Welcome, {{ name }}!</p>
 
 <ul class="entries">
-    {% for stylist in stylists %}
-    <li><p>{{ stylist.name }}</p>
+    {% for apt in stylist.appointments %}
+    <li><a href="{{ url_for('request_appointment' }}">{{ apt.date }} -
+
+        {% if apt.patron_id == -1 %}
+        available
+
         {% else %}
-    <li><em>Unbelievable. No stylists here so far</em>
+        <p>unavailable</p>
+        {% endif %}
+        </p></li>
         {% endfor %}
+
+
 </ul>
 {% endblock %}

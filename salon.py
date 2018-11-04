@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from datetime import date, time, datetime
 
 from models import db, Stylist, Patron, Appointment
 
@@ -31,11 +32,11 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/patron')
-def patron_page():
-    name = session['username']
+@app.route('/patron/<name>')
+def patron_page(name):
     stylists = Stylist.query.order_by(Stylist.id.desc()).all()
-    return render_template('patron.html', stylists=stylists, name=name)
+    patron = Patron.query.filter(Patron.name == name).first()
+    return render_template('patron.html', stylists=stylists, name=name, patron=patron)
 
 
 @app.route('/owner')
@@ -49,8 +50,8 @@ def owner_page():
 
 @app.route('/stylist/<name>')
 def stylist_page(name):
-    #appointments = Stylist.query.order_by
-    return render_template('stylist.html', name=name)#, appointments=appointments)
+    stylist = Stylist.query.filter(Stylist.name == name).first()
+    return render_template('stylist.html', name=name, stylist=stylist)
 
 
 @app.route('/add_stylist', methods=['POST'])
@@ -60,10 +61,19 @@ def add_stylist():
     if not session.get('username') == 'owner':
         abort(401)
     new = Stylist(request.form['name'], request.form['password'])
+
+    a = Appointment(date.today(), new.id, -1)
+
+    new.appointments.append(a)
     db.session.add(new)
     db.session.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('owner_page'))
+
+
+@app.routh('/requestappointment', methods=['GET', 'POST'])
+def request_appointment(patron_name, stylist_name):
+    return render_template('appointment.html', patron=patron_name, stylist=stylist_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -77,7 +87,7 @@ def login():
                 session['logged_in'] = True
                 session['username'] = request.form['name']
                 flash('You were logged in')
-                return redirect(url_for('patron_page'))
+                return redirect(url_for('patron_page', name=patron.name))
         for stylist in stylists:
             if request.form['name'] == stylist.name and request.form['password'] == stylist.password:
                 session['logged_in'] = True
