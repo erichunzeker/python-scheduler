@@ -13,7 +13,13 @@
 {% endif %}
 <ul class="entries">
     {% for stylist in stylists %}
-    <li><h2>{{ stylist.name }}</h2>
+    <li><p>{{ stylist.name }}</p>
+        {% for apt in stylist.appointments %}
+
+        {% if apt.patron_id != -1 %}
+        <p>{{ apt.date }} - booked </p>
+        {% endif %}
+        {% endfor %}
         {% else %}
     <li><em>Unbelievable. No stylists here so far</em>
         {% endfor %}

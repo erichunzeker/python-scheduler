@@ -1,19 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
+
+{% if session.username == name %}
 <p>Welcome, {{ name }}!</p>
+{% else %}
+<p>{{ name }}'s availabilities</p>
+{% endif %}
 
 <ul class="entries">
     {% for apt in stylist.appointments %}
-    <li><a href="{{ url_for('request_appointment') }}">{{ apt.date }} -
 
-        {% if apt.patron_id == -1 %}
-        available
+
+    {% if apt.patron_id == -1 %}
+    <li><a href="{{ url_for('request_appointment') }}">{{ apt.date }} - available</a>
 
         {% else %}
-        <p>unavailable</p>
+    <li><p>{{ apt.date }} - unavailable</p>
         {% endif %}
-        </a></li>
-        {% endfor %}
+    </li>
+    {% endfor %}
 
 
 </ul>

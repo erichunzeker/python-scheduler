@@ -1,7 +1,7 @@
-# Treat Yo Self -- <Replace with your name>
+# Treat Yo Self -- Eric Hunzeker
 
-Name: <Full Name>
-Pitt ID: <ID>
+Name: Eric Hunzeker
+Pitt ID: emh128
 
 ## Installation
 

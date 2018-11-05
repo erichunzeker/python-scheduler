@@ -73,8 +73,8 @@ def add_stylist():
 
 def seed_appointments(stylist):
     day = date.today().weekday()
-    today = date.today();
-    for i in range (7):
+    today = date.today()
+    for i in range(7):
         if 1 < day + i < 6:
             for time in range(6):
                 delta = timedelta(minutes=60)
@@ -89,10 +89,7 @@ def request_appointment():
         apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
 
         apt.patron_id = patron.id
-        apt.date = datetime.strptime(request.form['date'], '%Y-%M-%d')
-
-        print(apt.date)
-        print(apt.patron_id)
+        apt.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
 
         stylist.appointments.append(apt)
         patron.appointments.append(apt)
@@ -101,7 +98,7 @@ def request_appointment():
         db.session.add(patron)
         db.session.commit()
 
-    return render_template('appointment.html')
+    return redirect(url_for('patron_page', name=patron.name))
 
 
 @app.route('/login', methods=['GET', 'POST'])
