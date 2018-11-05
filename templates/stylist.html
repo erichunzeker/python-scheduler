@@ -4,7 +4,7 @@
 
 <ul class="entries">
     {% for apt in stylist.appointments %}
-    <li><a href="{{ url_for('request_appointment' }}">{{ apt.date }} -
+    <li><a href="{{ url_for('request_appointment') }}">{{ apt.date }} -
 
         {% if apt.patron_id == -1 %}
         available
@@ -12,7 +12,7 @@
         {% else %}
         <p>unavailable</p>
         {% endif %}
-        </p></li>
+        </a></li>
         {% endfor %}
 
 

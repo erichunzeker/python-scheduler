@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-from datetime import date, time, datetime
+from datetime import date, time, datetime, timedelta
 
 from models import db, Stylist, Patron, Appointment
 
@@ -29,7 +29,7 @@ def initdb_command():
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', user=session.get('username'))
 
 
 @app.route('/patron/<name>')
@@ -71,9 +71,37 @@ def add_stylist():
     return redirect(url_for('owner_page'))
 
 
-@app.routh('/requestappointment', methods=['GET', 'POST'])
-def request_appointment(patron_name, stylist_name):
-    return render_template('appointment.html', patron=patron_name, stylist=stylist_name)
+def seed_appointments(stylist):
+    day = date.today().weekday()
+    today = date.today();
+    for i in range (7):
+        if 1 < day + i < 6:
+            for time in range(6):
+                delta = timedelta(minutes=60)
+
+
+@app.route('/request_appointment', methods=['GET', 'POST'])
+def request_appointment():
+    if request.method == "POST":
+        stylist = Stylist.query.filter(Stylist.name == request.form['stylist_name']).first()
+        patron = Patron.query.filter(Patron.name == request.form['patron_name']).first()
+
+        apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
+
+        apt.patron_id = patron.id
+        apt.date = datetime.strptime(request.form['date'], '%Y-%M-%d')
+
+        print(apt.date)
+        print(apt.patron_id)
+
+        stylist.appointments.append(apt)
+        patron.appointments.append(apt)
+
+        db.session.add(stylist)
+        db.session.add(patron)
+        db.session.commit()
+
+    return render_template('appointment.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
