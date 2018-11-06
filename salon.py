@@ -62,22 +62,20 @@ def add_stylist():
         abort(401)
     new = Stylist(request.form['name'], request.form['password'])
 
-    a = Appointment(date.today(), new.id, -1)
-
-    new.appointments.append(a)
-    db.session.add(new)
-    db.session.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('owner_page'))
-
-
-def seed_appointments(stylist):
     day = date.today().weekday()
     today = date.today()
     for i in range(7):
-        if 1 < day + i < 6:
-            for time in range(6):
-                delta = timedelta(minutes=60)
+        if 1 <= day + i <= 6:
+            for t in range(11):
+                add = t + 8
+                dt = datetime.combine(today, time(0, 0)) + timedelta(days=i, hours=(add + 2))
+                a = Appointment(dt, new.id, -1)
+                new.appointments.append(a)
+                db.session.add(new)
+                db.session.commit()
+
+    flash('New entry was successfully posted')
+    return redirect(url_for('owner_page'))
 
 
 @app.route('/request_appointment', methods=['GET', 'POST'])
@@ -89,7 +87,11 @@ def request_appointment():
         apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
 
         apt.patron_id = patron.id
-        apt.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        # mytime = datetime.strptime(request.form['time'], '%H%M%S').time()
+        # mydatetime = datetime.combine(request.form['date'], mytime)
+        # print(datetime.strptime(request.form['date'], '%Y-%m-%d'))
+        # print(datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M'))
+        apt.date = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
 
         stylist.appointments.append(apt)
         patron.appointments.append(apt)
@@ -97,8 +99,8 @@ def request_appointment():
         db.session.add(stylist)
         db.session.add(patron)
         db.session.commit()
-
-    return redirect(url_for('patron_page', name=patron.name))
+        return redirect(url_for('patron_page', name=patron.name))
+    return render_template('appointment.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

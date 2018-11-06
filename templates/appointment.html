@@ -1,16 +1,30 @@
 {% extends "layout.html" %}
 {% block body %}
 <h2>Login</h2>
+
 {% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
-<form action="{{ url_for('request_appointment') }}" method="post">
+<!--<form action="{{ url_for('request_appointment') }}" method="post">
     <dl>
         <dt>Username:
         <dd><input type="text" name="patron_name">
         <dt>Stylist:
-        <dd><input type="text" name="stylist_name">
+        <dd><input type="text" name="stylist_name" value="{{ stylist_name }}" >
         <dt>Date:
             <input type="date" name="date">
+            <input type="time" name="time">
         <dd><input type="submit" value="Login">
     </dl>
-</form>
+</form>-->
+    <form action="{{ url_for('request_appointment') }}" method="post">
+    <dl>
+        <dt>Username:
+        <dd><input type="text" name="patron_name">
+        <dt>Stylist:
+        <dd><input type="text" name="stylist_name" value="{{ stylist_name }}" >
+        <dt>Date:
+            <input type="date" name="date">
+            <input type="time" name="time">
+        <dd><input type="submit" value="Login">
+    </dl>
+
 {% endblock %}

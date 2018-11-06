@@ -15,7 +15,7 @@
     <li><a href="{{ url_for('request_appointment') }}">{{ apt.date }} - available</a>
 
         {% else %}
-    <li><p>{{ apt.date }} - unavailable</p>
+    <li><p>{{ apt.date }} - booked</p>
         {% endif %}
     </li>
     {% endfor %}

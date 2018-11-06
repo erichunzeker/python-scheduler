@@ -35,7 +35,7 @@ class Stylist(db.Model):
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     stylist_id = db.Column(db.Integer, db.ForeignKey('stylist.id'))
     patron_id = db.Column(db.Integer, db.ForeignKey('patron.id'))
 
