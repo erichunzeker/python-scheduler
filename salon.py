@@ -72,6 +72,7 @@ def add_stylist():
                 a = Appointment(dt, new.id, -1)
                 new.appointments.append(a)
                 db.session.add(new)
+                db.session.add(a)
                 db.session.commit()
 
     flash('New entry was successfully posted')
@@ -84,20 +85,21 @@ def request_appointment():
         stylist = Stylist.query.filter(Stylist.name == request.form['stylist_name']).first()
         patron = Patron.query.filter(Patron.name == request.form['patron_name']).first()
 
-        apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
+        d = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
 
+        # apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
+
+        apt = Appointment.query.filter(Appointment.date == d and Appointment.stylist_id == stylist.id).first()
         apt.patron_id = patron.id
-        # mytime = datetime.strptime(request.form['time'], '%H%M%S').time()
-        # mydatetime = datetime.combine(request.form['date'], mytime)
-        # print(datetime.strptime(request.form['date'], '%Y-%m-%d'))
-        # print(datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M'))
-        apt.date = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
+        # apt.date = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
 
-        stylist.appointments.append(apt)
+        # stylist.appointments.append(apt)
         patron.appointments.append(apt)
 
-        db.session.add(stylist)
+        # db.session.add(stylist)
         db.session.add(patron)
+
+        # db.session.add(apt)
         db.session.commit()
         return redirect(url_for('patron_page', name=patron.name))
     return render_template('appointment.html')
