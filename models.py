@@ -10,6 +10,7 @@ class Patron(db.Model):
     name = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
     appointments = db.relationship('Appointment', backref='patron', lazy='dynamic')
+    stylist_id = db.Column(db.Integer, db.ForeignKey("stylist.id"))
 
     def __init__(self, name, password):
         self.name = name
@@ -24,6 +25,7 @@ class Stylist(db.Model):
     name = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
     appointments = db.relationship('Appointment', backref='stylist', lazy='dynamic')
+    patron = db.relationship("Patron", backref="stylist", lazy="select", uselist=False)
 
     def __init__(self, name, password):
         self.name = name

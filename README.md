@@ -17,3 +17,10 @@ Pitt ID: emh128
  * `export FLASK_APP=salon.py`
  * `flask initdb`
  * `flask run`
+ 
+ ## TODO
+ 
+ * add a home link
+ * add a cancel button
+ * display username next to booked appointment
+ * add patron pages to owner home page
