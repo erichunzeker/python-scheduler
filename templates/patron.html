@@ -16,7 +16,15 @@
         <p>your appointments: </p>
         {% for apt in patron.appointments %}
 
-        <p>{{ apt.date }} - </p>
+        <a href="{{ url_for('cancel_appointment') }}">{{ apt.date }} -
+        {% for stylist in stylists %}
+            {% if stylist.id == apt.stylist_id %}
+            {{ stylist.name }}
+            (cancel)
+            <br>
+        </a>
+        {% endif %}
+        {% endfor %}
         {% else %}
     <li><em>no appointments scheduled</em>
         {% endfor %}

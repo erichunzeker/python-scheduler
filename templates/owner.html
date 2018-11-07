@@ -21,8 +21,10 @@
             {% for patron in patrons %}
             {% if patron.id == apt.patron_id %}
             {{ patron.name }} </p>
+
         {% endif %}
         {% endfor %}
+
         {% endif %}
         {% endfor %}
         {% else %}

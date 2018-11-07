@@ -29,7 +29,7 @@ def initdb_command():
 
 @app.route('/')
 def home():
-    return render_template('home.html', user=session.get('username'))
+    return render_template('login.html')
 
 
 @app.route('/patron/<name>')
@@ -89,11 +89,8 @@ def request_appointment():
 
         d = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
 
-        # apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
-
         apt = Appointment.query.filter(Appointment.date == d and Appointment.stylist_id == stylist.id).first()
         apt.patron_id = patron.id
-        # apt.date = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
 
         stylist.appointments.append(apt)
         patron.appointments.append(apt)
@@ -106,30 +103,28 @@ def request_appointment():
         return redirect(url_for('patron_page', name=patron.name))
     return render_template('appointment.html')
 
+
 @app.route('/cancel_appointment', methods=['GET', 'POST'])
 def cancel_appointment():
     if request.method == "POST":
         stylist = Stylist.query.filter(Stylist.name == request.form['stylist_name']).first()
         patron = Patron.query.filter(Patron.name == request.form['patron_name']).first()
-
         d = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
+
+        Patron.query.filter(Patron.appointments.patron_id == Patron.id and Patron.appointments.date == d).delete()
 
         # apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
 
-        apt = Appointment.query.filter(Appointment.date == d and Appointment.stylist_id == stylist.id).first()
-        apt.patron_id = patron.id
-        # apt.date = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
+        apt = Appointment.query.filter(Appointment.patron_id == patron.id and Appointment.stylist_id == stylist.id).first()
+        patron.appointments.remove(apt)
+        apt.patron_id = -1
 
-        # stylist.appointments.append(apt)
-        patron.appointments.append(apt)
-
-        # db.session.add(stylist)
         db.session.add(patron)
-
-        # db.session.add(apt)
+        db.session.add(apt)
         db.session.commit()
         return redirect(url_for('patron_page', name=patron.name))
     return render_template('appointment.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

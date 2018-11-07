@@ -22,5 +22,4 @@ Pitt ID: emh128
  
  * add a home link
  * add a cancel button
- * display username next to booked appointment
- * add patron pages to owner home page
+ * If no appointments are scheduled for a stylist, a message should be displayed informing the Owner of this explicitly.
