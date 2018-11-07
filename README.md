@@ -20,6 +20,4 @@ Pitt ID: emh128
  
  ## TODO
  
- * add a home link
- * add a cancel button
  * If no appointments are scheduled for a stylist, a message should be displayed informing the Owner of this explicitly.

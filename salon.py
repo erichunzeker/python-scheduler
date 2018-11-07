@@ -109,21 +109,15 @@ def cancel_appointment():
     if request.method == "POST":
         stylist = Stylist.query.filter(Stylist.name == request.form['stylist_name']).first()
         patron = Patron.query.filter(Patron.name == request.form['patron_name']).first()
-        d = datetime.strptime(request.form['date'] + " " + request.form['time'], '%Y-%m-%d %H:%M')
-
-        Patron.query.filter(Patron.appointments.patron_id == Patron.id and Patron.appointments.date == d).delete()
-
-        # apt = Appointment.query.filter(Appointment.stylist_id == stylist.id).first()
 
         apt = Appointment.query.filter(Appointment.patron_id == patron.id and Appointment.stylist_id == stylist.id).first()
-        patron.appointments.remove(apt)
         apt.patron_id = -1
 
         db.session.add(patron)
         db.session.add(apt)
         db.session.commit()
         return redirect(url_for('patron_page', name=patron.name))
-    return render_template('appointment.html')
+    return render_template('cancel.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

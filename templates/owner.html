@@ -20,7 +20,8 @@
         <p>{{ apt.date }} -
             {% for patron in patrons %}
             {% if patron.id == apt.patron_id %}
-            {{ patron.name }} </p>
+            {{ patron.name }}
+        </p>
 
         {% endif %}
         {% endfor %}
@@ -28,7 +29,7 @@
         {% endif %}
         {% endfor %}
         {% else %}
-    <li><em>Unbelievable. No stylists here so far</em>
+    <li><em>no stylists created yet</em>
         {% endfor %}
 </ul>
 {% endblock %}
