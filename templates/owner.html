@@ -14,6 +14,7 @@
 <ul class="entries">
     {% for stylist in stylists %}
     <li><p>{{ stylist.name }}</p>
+
         {% for apt in stylist.appointments %}
 
         {% if apt.patron_id != -1 %}
@@ -22,10 +23,8 @@
             {% if patron.id == apt.patron_id %}
             {{ patron.name }}
         </p>
-
-        {% endif %}
-        {% endfor %}
-
+            {% endif %}
+            {% endfor %}
         {% endif %}
         {% endfor %}
         {% else %}
