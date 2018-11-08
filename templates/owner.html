@@ -13,8 +13,7 @@
 {% endif %}
 <ul class="entries">
     {% for stylist in stylists %}
-    <li><p>{{ stylist.name }}</p>
-
+    <li><a href="{{ url_for('stylist_page', name=stylist.name, stylist=stylists) }}">{{ stylist.name }}</a>
         {% for apt in stylist.appointments %}
 
         {% if apt.patron_id != -1 %}
